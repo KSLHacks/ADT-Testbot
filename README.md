@@ -1,2 +1,2 @@
-# ADT-Testbot
+# ProjectBermuda
 Repo to run tests
