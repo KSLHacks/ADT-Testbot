@@ -1,0 +1,25 @@
+{
+  "name": "ProjectBermuda",
+  "version": "1.0.0",
+  "description": "Repo to run tests",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KSLHacks/ProjectBermuda.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/KSLHacks/ProjectBermuda/issues"
+  },
+  "homepage": "https://github.com/KSLHacks/ProjectBermuda#readme",
+  "dependencies": {
+    "botbuilder": "^3.11.0",
+    "dotenv": "^4.0.0",
+    "restify": "^6.0.1"
+  }
+}

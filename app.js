@@ -1,6 +1,8 @@
 // Require npm packages
+require('dotenv').config()
 const restify = require('restify')
 const builder = require('botbuilder')
+const applyMiddleware = require('./botmiddle')
 
 // =========================================================
 // Bot Setup
@@ -19,6 +21,11 @@ var connector = new builder.ChatConnector({
 })
 
 var bot = new builder.UniversalBot(connector)
+
+// bot = applyMiddleware(bot, [function () {
+//   console.log('!!!!!!!!!!! TEST:   something !!!!!!!!!!!!!!!!!!!!')
+// }])
+
 server.post('/api/messages', connector.listen())
 
 // =========================================================
