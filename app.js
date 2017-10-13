@@ -21,7 +21,20 @@ var connector = new builder.ChatConnector({
 
 var bot = new builder.UniversalBot(connector)
 
-bot.use({receive: function () { console.log(' middleware received: ', arguments) }})
+bot.use({
+  receive: function (session, next) {
+    console.log('Got recieve middleware: ', arguments)
+    next()
+  },
+  botbuilder: function (session, next) {
+    console.log('Got botbuilder middelware: ', arguments)
+    next()
+  },
+  send: function (session, next) {
+    console.log('Got send middleware: ', arguments)
+    next()
+  }
+})
 
 server.post('/api/messages', connector.listen())
 
