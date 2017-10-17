@@ -21,17 +21,30 @@ var connector = new builder.ChatConnector({
 
 var bot = new builder.UniversalBot(connector)
 
+// // Configuration Object
+// var ConfigObject = {
+//   'EndpointURL': 'https://metrics.customer.com',
+//   'EndpointMethod': 'POST'
+//   // any other config settings to be passed
+//   // data from DLC passed through
+// }
+
+// bot = ApplyTelemetryMiddleware(bot, ConfigObject)
+
 bot.use({
-  receive: function (session, next) {
-    console.log('Got recieve middleware: ', arguments)
-    next()
-  },
   botbuilder: function (session, next) {
-    console.log('Got botbuilder middelware: ', arguments)
-    next()
-  },
-  send: function (session, next) {
-    console.log('Got send middleware: ', arguments)
+    console.log('Got botbuilder middelware: ', session)
+
+    bot.once('send', (event) => {
+      console.log('message to send:', event)
+      event.test = 'TEST'
+      // Create payload object: ConfigObject, session.message.analytics, session, message
+      // var body = {
+        // TODO: populate with required data.
+      // }
+
+      // Call endpoint defined in ConfigObject
+    })
     next()
   }
 })
