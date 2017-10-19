@@ -23,13 +23,14 @@ var bot = new builder.UniversalBot(connector)
 
 // // Configuration Object
 // var ConfigObject = {
-//   'EndpointURL': 'https://metrics.customer.com',
-//   'EndpointMethod': 'POST'
+//   'endpointURL': 'https://metrics.customer.com',
+//   'endpointMethod': 'POST'
+//   'botVersion': 'v3'
 //   // any other config settings to be passed
 //   // data from DLC passed through
 // }
 
-// bot = ApplyTelemetryMiddleware(bot, ConfigObject)
+// bot = ApplyTelemetryMiddleware(bot, ConfigObject, function)
 
 bot.use({
   botbuilder: function (session, next) {
@@ -39,10 +40,46 @@ bot.use({
       console.log('message to send:', event)
       event.test = 'TEST'
       // Create payload object: ConfigObject, session.message.analytics, session, message
-      // var body = {
-        // TODO: populate with required data.
-      // }
+      var body = {
+        botName: event.address.bot.name,
+        botChannel: event.address.channelId,
+        userMessage: session.message.text,
+        userMessageLength: session.message.text.length,
+        userMessageTimestamp: session.message.localTimestamp,
+        botResponse: event.text,
+        botResponseTimestamp: event.localTimestamp,
+        botResponseLength: event.text.length,
+        botResponseLatency: (session.message.localTimestamp - event.localTimestamp) // (user message received - bot response)
+        // The active Dialog and step (For waterfall dialogs)
+        // Intent recognized in the user message + entities - When applicable
+        // Optional - Text Analytics data: Sentiment score, language, key phrases. Ideally hooking up text analytics with Adobe Analytics should be plug 'n' play - via the Experience Cloud SDK Configuration?
 
+        // Identified question - When the bot uses QnA maker and QnA maker have matched a question in it's database.
+        // Custom data - The SDK should provide a "hook" for the bot developer to augment Analytics data with it's own data elements.
+        // Errors - When the bot receives an utterance and does not know what to do with it.
+        // Launch events - I want to know how frequently users launch the bot and start new chat sessions so I can observe adoption and return use
+      }
+      console.log('>>>>>>>>> body:', body)
+      // call function
+      // /////////////////
+
+      // The user message - Cleaned, capped at 255 characters. (Cleaning = Remove CRLF, extra spaces, etc)
+      // body.userMessage = body.userMessage.trim()
+      // if (body.userMessage.length > 255) { body.userMessage = body.userMessage.substring(0, 255) }
+
+      // The bot version - Managed by the bot developer
+        // body.version: ConfigObject.botVersion
+      // if (typeof ConfigObject.botVersion === 'undefined') { body.botVersion = ConfigObject.botVersion }
+
+      // Passed through the DLC
+      // The user location - IP address (If known), or any other location data available
+      // Browser - For web channel / direct line when coming through a browser
+      // Host page URL - For web channel / direct line when coming through a browser
+        // body.userLocation: session.userData.Telemetry.location (passed in from DLC into session.userData bag)
+        // body.browser:
+        // body.hostPageUrl:
+
+      // /////////////////
       // Call endpoint defined in ConfigObject
     })
     next()
