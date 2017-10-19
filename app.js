@@ -45,9 +45,9 @@ bot.use({
         botChannel: event.address.channelId,
         userMessage: session.message.text,
         userMessageLength: session.message.text.length,
-        userMessageTimestamp: session.message.localTimestamp,
+        userMessageTimestamp: session.message.timestamp,
         botResponse: event.text,
-        botResponseTimestamp: event.localTimestamp,
+        botResponseTimestamp: event.timestamp,
         botResponseLength: event.text.length,
         botResponseLatency: (session.message.localTimestamp - event.localTimestamp) // (user message received - bot response)
         // The active Dialog and step (For waterfall dialogs)
