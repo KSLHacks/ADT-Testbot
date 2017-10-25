@@ -34,7 +34,8 @@ var dialog = new builder.IntentDialog({recognizers: [recognizer]})
 // REQUIRED Configuration Object
 // REQUIRED for Adobe
 var configObject = {
-  'botVersion': 'v3'
+  'botVersion': 'v3',
+  'luisRecognizer': recognizer
 }
 
 // REQUIRED function: API/Endpoint/DB Connection calls
