@@ -2,7 +2,7 @@
 require('dotenv').config()
 const restify = require('restify')
 const builder = require('botbuilder')
-const ApplyTelemetryMiddleware = require('botbuilder-telemetry')
+const ApplyAdobeTelemetryMiddleware = require('adobe-botbuilder-telemetry')
 
 // =========================================================
 // Bot Setup
@@ -35,12 +35,16 @@ var dialog = new builder.IntentDialog({recognizers: [recognizer]})
 // REQUIRED for Adobe
 var configObject = {
   'botVersion': 'v3',
-  'luisRecognizer': recognizer
+  'luisRecognizer': recognizer,
+  'orgId': '33C1401053CF76370A490D4C@AdobeOrg',
+  'analyticsServer': 'https://hackathon.sc.omtrdc.net',
+  'rsid': 'geo1xxpnwbotsdkdev',
+  'pageName': 'sc.omtrdc.net'
 }
 
 // REQUIRED function: API/Endpoint/DB Connection calls
 // OPTIONAL for Adobe
-function dataHandleFunction (body) {
+function dataHandleFunction (body, session, messages, configObject) {
   console.log('>>>> Body', body)
 }
 
@@ -49,7 +53,7 @@ function dataHandleFunction (body) {
 // function dataMutationFunction (body, session, event, ConfigObject) { }
 
 // bot = ApplyTelemetryMiddleware(bot, configObject, dataHandleFunction, dataMutationFunction)
-bot = ApplyTelemetryMiddleware(bot, configObject, dataHandleFunction)
+bot = ApplyAdobeTelemetryMiddleware(bot, configObject, dataHandleFunction)
 
 // =========================================================
 // Bots Dialogs
@@ -73,6 +77,7 @@ dialog.matches('greeting', [
         'HostUrl': 'https://www.test.com'
       }
     }
+    session.save()
     session.send('Hello! I am your friendly bot.')
   }
 ])
@@ -98,5 +103,11 @@ bot.dialog('/mainMenu', [
         session.beginDialog('/sendMoney')
         break
     }
+  }
+])
+
+dialog.matches('None', [
+  function (session, results) {
+    session.send('NONE intent')
   }
 ])
