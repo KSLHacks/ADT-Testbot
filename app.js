@@ -1,8 +1,9 @@
 // Require npm packages
 require('dotenv').config()
-const restify = require('restify')
+const ApplyAdobeTelemetryMiddleware = require('AnalyticsBotSDK')
+// const cognitiveServices = require('botbuilder-cognitiveservices')
 const builder = require('botbuilder')
-const ApplyAdobeTelemetryMiddleware = require('adobe-botbuilder-telemetry')
+const restify = require('restify')
 
 // =========================================================
 // Bot Setup
@@ -25,8 +26,14 @@ server.post('/api/messages', connector.listen())
 
 // Setup LUIS connection
 var model = 'https://eastus2.api.cognitive.microsoft.com/luis/v2.0/apps/' + process.env.LUIS_ID + '?subscription-key=' + process.env.LUIS_KEY + '&verbose=true'
-var recognizer = new builder.LuisRecognizer(model)
-var dialog = new builder.IntentDialog({recognizers: [recognizer]})
+var luisRecognizer = new builder.LuisRecognizer(model)
+var dialog = new builder.IntentDialog({recognizers: [luisRecognizer]})
+
+// Setup QnA connection
+// var qnaRecognizer = new cognitiveServices.QnAMakerRecognizer({
+//   knowledgeBaseId: process.env.QnA_ID,
+//   subscriptionKey: process.env.QnA_KEY
+// })
 
 // =========================================================
 // Middleware: botbuilder-telemetry
@@ -35,7 +42,8 @@ var dialog = new builder.IntentDialog({recognizers: [recognizer]})
 // REQUIRED for Adobe
 var configObject = {
   'botVersion': 'v3',
-  'luisRecognizer': recognizer,
+  'luisRecognizer': luisRecognizer,
+  // 'qnaRecognizer': qnaRecognizer,
   'orgId': '33C1401053CF76370A490D4C@AdobeOrg',
   'analyticsServer': 'https://hackathon.sc.omtrdc.net',
   'rsid': 'geo1xxpnwbotsdkdev',
