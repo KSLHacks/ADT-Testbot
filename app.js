@@ -78,14 +78,14 @@ bot.dialog('/', dialog)
 
 dialog.matches('greeting', [
   function (session, results) {
-    session.conversationData = {
-      'telemetry': {
-        'brower': 'Microsoft Edge',
-        'IPaddress': '192.168.1.1',
-        'HostUrl': 'https://www.test.com'
-      }
-    }
-    session.save()
+    // session.conversationData = {
+    //   'telemetry': {
+    //     'brower': 'Microsoft Edge',
+    //     'IPaddress': '192.168.1.1',
+    //     'HostUrl': 'https://www.test.com'
+    //   }
+    // }
+    // session.save()
     session.send('Hello! I am your friendly bot.')
   }
 ])
